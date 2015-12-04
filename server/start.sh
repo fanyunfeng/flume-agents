@@ -2,10 +2,27 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-cd ${bin}
-
 #load config
 . ${bin}/../etc/config.sh
+
+#
+cd ${bin}
+
+#create directory
+if [ ! -d logs ]; then
+    mkdir logs
+    chown ${HADOOP_USER} logs
+fi
+
+if [ ! -d cache/checkpoint ]; then
+    mkdir -p cache/checkpoint
+    chown ${HADOOP_USER} cache -R
+fi
+
+if [ ! -d cache/data ]; then
+    mkdir cache/data
+    chown ${HADOOP_USER} cache/data
+fi
 
 
 #
