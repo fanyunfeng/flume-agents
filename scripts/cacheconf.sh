@@ -22,7 +22,7 @@ if [ "${prefix:-1}" != "/" ]; then
 fi
 
 #to DOS path
-prefix=`echo ${prefix} | sed -e 's|^\/\(.\?\)\/|c:\/|;s|/$||'`
+prefix=`echo ${prefix} | sed -e 's|^\/\(.\?\)\/|\1:\/|;s|/$||'`
 
 echo "DOS dir prefix: ${prefix} TimeTag:${timetag}"
 
@@ -30,10 +30,10 @@ echo "DOS dir prefix: ${prefix} TimeTag:${timetag}"
 bakfile=${workdir}/log4cxx.xml.${timetag}
 
 #if [ -e ${bakfile} ]; then
-  echo "backup file already exist."
+  #echo "backup file already exist."
 
   #
-  lastfile=`ls log4cxx.xml.2015-12-08.* -tv | tail -n 1`
+  lastfile=`ls ${bakfile}.* -tv | tail -n 1`
 
   if [ -z "${lastfile}" ]; then
     count=1
@@ -50,7 +50,5 @@ bakfile=${workdir}/log4cxx.xml.${timetag}
 #backup
 cp ${workdir}/log4cxx.xml ${bakfile} 
 
-
-
 #generate log4cxx config file
-sed -s "s|\${prefix}|${prefix}|g;s|\${instance}|${instance}|g" ./client/cache/log4cxx.xml.template > log4cxx.xml
+sed -s "s|\${prefix}|${prefix}|g;s|\${instance}|${instance}|g" ./client/cache/log4cxx.xml.template > ${workdir}/log4cxx.xml
