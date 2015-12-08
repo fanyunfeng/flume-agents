@@ -53,4 +53,4 @@ cp ${workdir}/log4cxx.xml ${bakfile}
 
 
 #generate log4cxx config file
-sed -s "s|\${prefix}|${prefix}|g;s|\${instance}|${instance}|g" ./client/d2/log4cxx.xml.template > log4cxx.xml
+sed -s "s|\${prefix}|${prefix}|g;s|\${instance}|${instance}|g" ./client/cache/log4cxx.xml.template > log4cxx.xml
