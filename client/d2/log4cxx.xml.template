@@ -4,7 +4,7 @@
 <log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
 	<appender name="search" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="Append" value="true"/>
-    <param name="File" value="${prefix}/logs/d2${instance}/search.log"/>
+		<param name="File" value="${prefix}/logs/d2${instance}/search.log"/>
 		<param name="DatePattern" value=".yyyy-MM-dd-HH"/>
 		<param name="ImmediateFlush" value="true"/>
 		<param name="BufferSize" value="8192"/>
@@ -16,7 +16,7 @@
 	</appender>
 	
 	<appender name="index" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="${prefix}/logs/d2${instance}/index.log"/>
+		<param name="File" value="${prefix}/logs/d2${instance}/index.log"/>
 		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
 		<param name="ImmediateFlush" value="true"/>
 		<param name="BufferSize" value="8192"/>
@@ -29,7 +29,7 @@
 	</appender>
 	
 	<appender name="error" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="${prefix}/logs/d2${instance}/error.log"/>
+		<param name="File" value="${prefix}/logs/d2${instance}/error.log"/>
 		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
 		<param name="ImmediateFlush" value="true"/>
 		<param name="BufferSize" value="8192"/>
@@ -42,7 +42,7 @@
 	</appender>
 	
 	<appender name="time" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="${prefix}/logs/d2${instance}/time.log"/>
+		<param name="File" value="${prefix}/logs/d2${instance}/time.log"/>
 		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
 		<param name="ImmediateFlush" value="true"/>
 		<param name="BufferSize" value="8192"/>
