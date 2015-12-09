@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+	<appender name="debug" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value=".\logs\debug.log"/>
+		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="BufferSize" value="8192"/>
+		<param name="BufferedIO" value="false"/>
+		<param name="MaxFileSize" value="500MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss:SSS} %t %-5p - %m%n"/>
+		</layout>
+	</appender>
+	<appender name="info" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value=".\logs\info.log"/>
+		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="BufferSize" value="8192"/>
+		<param name="BufferedIO" value="false"/>
+		<param name="MaxFileSize" value="50MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss:SSS} %t %-5p - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="error" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value=".\logs\error.log"/>
+		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="BufferSize" value="8192"/>
+		<param name="BufferedIO" value="false"/>
+		<param name="MaxFileSize" value="50MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss:SSS} %t %-5p - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="time" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value=".\logs\time.log"/>
+		<param name="DatePattern" value=".yyyy-MM-dd-a"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="BufferSize" value="8192"/>
+		<param name="BufferedIO" value="false"/>
+		<param name="MaxFileSize" value="50MB"/>
+		<param name="MaxBackupIndex" value="10"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss:SSS} %t %-5p - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="search_time" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="Append" value="true"/>
+		<param name="File" value="logs/search_time/search_time.log"/>
+		<param name="DatePattern" value=".yyyy-MM-dd-HH"/>
+		<param name="ImmediateFlush" value="true"/>
+		<param name="BufferSize" value="8192"/>
+		<param name="BufferedIO" value="true"/>
+		<param name="MaxBackupIndex" value="5"/>
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yy-MM-dd HH:mm:ss:SSS},%m%n"/>
+		</layout>
+	</appender>
+
+	<root>
+		<level value="debug"/>
+	</root>
+
+	<logger name="in">
+		<appender-ref ref="info"/>
+		<level value="debug"/>
+	</logger>
+	
+	<logger name="im">
+		<level value="debug"/>
+		<appender-ref ref="error"/>
+	</logger>
+	
+	<logger name="so">
+		<level value="debug"/>
+		<appender-ref ref="error"/>
+	</logger>
+	
+	<logger name="er">
+		<level value="error"/>
+		<appender-ref ref="error"/>
+	</logger>
+	
+	<logger name="ti">
+		<level value="debug"/>
+		<appender-ref ref="time"/>
+	</logger>
+	
+	<logger name="de">
+		<level value="debug"/>
+		<appender-ref ref="debug"/>
+	</logger>
+	
+	<logger name="st">
+		<level value="debug"/>
+		<appender-ref ref="search_time"/>
+	</logger>
+
+</log4j:configuration>
