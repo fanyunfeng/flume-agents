@@ -23,26 +23,12 @@ function formatIp(){
 	echo ${ip:1}
 }
 
-function toDosPath(){
-    echo $1 | sed -e 's|^\/\(.\?\)\/|\1:\/|;s|/$||;s|/|\\|g'
-}
-
-function toDosRath(){
-    echo $1 | sed -e 's|^\/\(.\?\)\/|\1$\/|;s|/$||;s|/|\\|g'
-}
-
-#
-#args: $1=file $2=host $3=source $4=dest
+#args: $1=file $2=host $3=host $2=format
 function genBat(){
-    local file=${TMPDIR}/$1
-    local rpath=`toDosRath $4`
-    local dest=\\\\$2\\${rpath}
-    local src=`toDosPath $3`
-
+	local file=${TMPDIR}/$1
     echo "REM ECHO OFF" > ${file}
-    echo "mkdir ${dest}" >> ${file}
-    echo "xcopy ${src} ${dest} /E /F /H /Y" >> ${file}
-    
+    echo "psexec \\\\$2 c:\\opt\\nssm-2.24\\win64\\nssm.exe install hc.flume c:\\opt\\flume-agents\\client\\start.bat $3.conf" >> ${file}
+
     echo "exit" >> ${file}
 }
 
@@ -52,11 +38,11 @@ function runBat(){
 	cmd /K ${TMPDIR}\\$1
 }
 
-if [ $# -lt 3 ]; then
+if [ $# -lt 1 ]; then
     echo "Windows Platform Deploy Tools"
     echo 
     echo "help:"
-    echo $0 host.file /driver/sourc/dir /driver/destination/dir
+    echo $0 host.file 
     echo
 
     exit
@@ -69,6 +55,8 @@ fi
 hosts=$1
 shift
 
+tmpfilename=csrv.bat
+
 grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
     echo ${host} ${os}
   
@@ -76,9 +64,10 @@ grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
         continue
     fi
 
-    #name=`formatIp $host`
-
-    genBat rcp.bat $host $*
-
-    runBat rcp.bat
+    name=`formatIp $host`
+	
+	
+    genBat ${tmpfilename} $host $name 
+	
+	runBat ${tmpfilename}
 done

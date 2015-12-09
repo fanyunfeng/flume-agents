@@ -32,16 +32,16 @@ function toDosRath(){
 }
 
 #
-#args: $1=file $2=host $3=source $4=dest
+#args: $1=file $2=host $3=command
 function genBat(){
     local file=${TMPDIR}/$1
-    local rpath=`toDosRath $4`
-    local dest=\\\\$2\\${rpath}
-    local src=`toDosPath $3`
+    local host=$2
+    local command=`toDosPath $3`
+
+    shift 3
 
     echo "REM ECHO OFF" > ${file}
-    echo "mkdir ${dest}" >> ${file}
-    echo "xcopy ${src} ${dest} /E /F /H /Y" >> ${file}
+    echo "psexec \\\\${host} ${command} $*" >> ${file}
     
     echo "exit" >> ${file}
 }
@@ -69,6 +69,8 @@ fi
 hosts=$1
 shift
 
+tmpfilename=rrun.bat
+
 grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
     echo ${host} ${os}
   
@@ -78,7 +80,7 @@ grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
 
     #name=`formatIp $host`
 
-    genBat rcp.bat $host $*
+    genBat ${tmpfilename} $host $*
 
-    runBat rcp.bat
+    runBat ${tmpfilename}
 done
