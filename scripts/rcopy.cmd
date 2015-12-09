@@ -16,6 +16,6 @@ for /f %%i in ( %HOSTFILE% ) do (
 	) else (
 		echo "xcopy to %%i:"
 		mkdir \\%%i\c$%~pn1
-		xcopy %1 \\%%i\c$%~pn1 /E /F
+		xcopy %1 \\%%i\c$%~pn1 /E /F /H /Y
 	)
 )
