@@ -17,5 +17,7 @@ if [ ! -d logs ]; then
     mkdir logs
 fi
 
+export FLUME_JAVA_OPTS=-Xmx200m
+
 #
 exec ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf --conf-file ${bin}/${CONF} --name a1 -Dflume.root.logger=DEBUG,LOGFILE
