@@ -44,6 +44,11 @@ function genBat(){
 
 #BAT file
 cat << EOF > ${file}
+psexec \\\\${host} -c `toDosPath ${file}.cmd`
+EOF
+
+#evn file
+cat << EOF > ${file}.cmd
 REM ECHO OFF
 
 setx -m JAVA_HOME "C:\Program Files\Java\jre7"
