@@ -40,8 +40,7 @@ function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
 
-    local cmd=$3
-    shift 3
+    local commandFile=$3
 
 #BAT file
 cat << EOF > ${file}
