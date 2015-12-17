@@ -40,16 +40,14 @@ function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
 
-    local rpath=`toDosRath $4`
-    local dest=\\\\$2\\${rpath}
-    local src=`toDosPath $3`
+    local cmd=$3
+    shift 3
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
 
-mkdir ${dest}
-xcopy ${src} ${dest} /E /F /H /Y
+${cmd} \\\\${host} $*
 EOF
 }
 
