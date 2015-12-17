@@ -10,14 +10,14 @@ if [ ! -d ${TMPDIR} ]; then
     mkdir -p ${TMPDIR}
 fi
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 3 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
     echo "doc:"
-    echo "create service on Remote Windows Machines."
+    echo "run bash scripts on Remote Windows Machines."
     echo 
     echo "usage:"
-    echo $0 host.file 
+    echo $0 host.file /driver/sourc/dir /driver/destination/dir
     echo
 
     exit
@@ -39,13 +39,17 @@ echo ${tmpfilename}
 function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
-    local name=`formatIp $host`
+
+    local rpath=`toDosRath $4`
+    local dest=\\\\$2\\${rpath}
+    local src=`toDosPath $3`
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
 
-psexec \\\\${host} c:\\opt\\nssm-2.24\\win64\\nssm.exe install hc.flume c:\\opt\\flume-agents\\client\\start.bat ${name}.conf
+mkdir ${dest}
+xcopy ${src} ${dest} /E /F /H /Y
 EOF
 }
 

@@ -17,3 +17,4 @@ for /f %%i in ( %HOSTFILE% ) do (
 		psexec \\%%i -c %1 /NORESTART /SILENT
 	)
 )
+

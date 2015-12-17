@@ -14,10 +14,10 @@ if [ $# -lt 1 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
     echo "doc:"
-    echo "create service on Remote Windows Machines."
+    echo "install git on remote Windows Machine."
     echo 
     echo "usage:"
-    echo $0 host.file 
+    echo $0 host.file
     echo
 
     exit
@@ -39,15 +39,14 @@ echo ${tmpfilename}
 function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
-    local name=`formatIp $host`
+
+    echo ${file}
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
-
-psexec \\\\${host} c:\\opt\\nssm-2.24\\win64\\nssm.exe install hc.flume c:\\opt\\flume-agents\\client\\start.bat ${name}.conf
+psexec \\\\${host} -c \\\\${FSERVER}\\share\\software\\windows\Git-1.9.5-preview20150319.exe /NORESTART /SILENT
 EOF
 }
 
 runOnHosts $*
-

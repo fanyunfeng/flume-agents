@@ -14,10 +14,10 @@ if [ $# -lt 1 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
     echo "doc:"
-    echo "create service on Remote Windows Machines."
+    echo "set Environment Variable on remote Windows Machines."
     echo 
     echo "usage:"
-    echo $0 host.file 
+    echo $0 host.file
     echo
 
     exit
@@ -39,13 +39,16 @@ echo ${tmpfilename}
 function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
-    local name=`formatIp $host`
+
+    echo ${file}
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
 
-psexec \\\\${host} c:\\opt\\nssm-2.24\\win64\\nssm.exe install hc.flume c:\\opt\\flume-agents\\client\\start.bat ${name}.conf
+setx -m JAVA_HOME "C:\Program Files\Java\jre7"
+setx -m CLASSPATH ".;C:\Program Files\Java\jre7\lib\tools.jar"
+setx -m FLUME_HOME "c:\opt\apache-flume-1.6.0-bin"
 EOF
 }
 

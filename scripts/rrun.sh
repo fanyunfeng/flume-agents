@@ -53,11 +53,12 @@ function runBat(){
 }
 
 if [ $# -lt 3 ]; then
-    echo "Windows Platform Deploy Tools"
+    echo "Windows Platform Deployment Tools"
     echo 
     echo "help:"
-    echo $0 host.file /driver/sourc/dir /driver/destination/dir
+    echo $0 host.file [-c] /driver/sourc/dir args...
     echo
+    echo -c copy the file to remote Machina.
 
     exit
 fi
