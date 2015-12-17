@@ -40,13 +40,12 @@ function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
 
-    local cmd=$3
-    shift 3
+    local commandFile=$3
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
-schtasks /create /tn hc.flume.rmfiles /tr `toDosPath ${commandFile}` /sc DAILY /RU "System" /RP /s ${host}
+schtasks /create /tn hc.flume.rmfiles /tr `toDosPath ${commandFile}` /sc DAILY /RU "System" /RP /st 00:15:00 /s ${host}
 EOF
 }
 
