@@ -39,23 +39,29 @@ echo ${tmpfilename}
 function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
+    local commandFile=$3
 
     local rTmpDir=/c/opt/tmp
 
-    local path=`toDosPath $3`
     local rTmpHostDir=\\\\$2\\`toDosRath ${rTmpDir}`
-    local src=`toDosPath $3`
 
-    local fileName=`basename $3`
+    local fileName=`basename ${commandFile}`
+
+#BOOT BAT run by psexec
+cat << EOF > ${file}.bat
+`toDosPath ${rTmpDir}`\\${fileName}
+EOF
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
 
-REM mkdir ${rTmpHostDir}
-REM xcopy `toDosPath ${src}` ${rTmpHostDir}
+REM upload shell script
+mkdir ${rTmpHostDir}
+xcopy `toDosPath ${commandFile}` ${rTmpHostDir} /Y
 
-REM `toDosPath ${rTmpDir}`\\${fileName}
+REM run bat on Remote Host
+psexec \\\\${host} -c -f `toDosPath ${file}.bat`
 EOF
 }
 
