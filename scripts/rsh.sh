@@ -10,14 +10,14 @@ if [ ! -d ${TMPDIR} ]; then
     mkdir -p ${TMPDIR}
 fi
 
-if [ $# -lt 3 ]; then
+if [ $# -lt 2 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
     echo "doc:"
-    echo "run bash scripts on Remote Windows Machines."
+    echo "run bash script on Remote Windows Machines."
     echo 
     echo "usage:"
-    echo $0 host.file /driver/sourc/dir /driver/destination/dir
+    echo $0 host.file /driver/sourc/dir/file
     echo
 
     exit
@@ -40,16 +40,22 @@ function genBat(){
     local file=${TMPDIR}/$1
     local host=$2
 
-    local rpath=`toDosRath $4`
-    local dest=\\\\$2\\${rpath}
+    local rTmpDir=/c/opt/tmp
+
+    local path=`toDosPath $3`
+    local rTmpHostDir=\\\\$2\\`toDosRath ${rTmpDir}`
     local src=`toDosPath $3`
+
+    local fileName=`basename $3`
 
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
 
-mkdir ${dest}
-xcopy ${src} ${dest} /E /F /H /Y
+REM mkdir ${rTmpHostDir}
+REM xcopy `toDosPath ${src}` ${rTmpHostDir}
+
+REM `toDosPath ${rTmpDir}`\\${fileName}
 EOF
 }
 
