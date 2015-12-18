@@ -33,6 +33,7 @@ function runBat(){
 
 function runOnHosts(){
     grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
+        echo -------------------
         echo ${host} ${os}
       
         if [ -z "${host}" ]; then

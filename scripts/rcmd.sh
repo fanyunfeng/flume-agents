@@ -30,7 +30,7 @@ hosts=$1
 shift
 
 tmpfilename=`basename $0 .sh`
-tmpfilename=${tmpfilename}.cmd
+tmpfilename=${tmpfilename}.bat
 
 echo ${tmpfilename}
 
@@ -48,6 +48,7 @@ cat << EOF > ${file}
 REM ECHO OFF
 
 ${cmd} \\\\${host} $*
+exit
 EOF
 }
 

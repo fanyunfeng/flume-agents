@@ -49,7 +49,7 @@ function genBat(){
 
 #BOOT BAT run by psexec
 cat << EOF > ${file}.bat
-`toDosPath ${rTmpDir}`\\${fileName}
+"C:\Program Files (x86)\Git\bin\sh.exe" --login `toDosPath ${rTmpDir}`\\${fileName}
 EOF
 
 #BAT file
@@ -62,6 +62,7 @@ xcopy `toDosPath ${commandFile}` ${rTmpHostDir} /Y
 
 REM run bat on Remote Host
 psexec \\\\${host} -c -f `toDosPath ${file}.bat`
+exit
 EOF
 }
 
