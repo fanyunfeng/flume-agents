@@ -24,6 +24,10 @@ if [ ! -d cache/data ]; then
     chown ${HADOOP_USER} cache/data
 fi
 
+MONCONF="-Dflume.monitoring.type=ganglia -Dflume.monitoring.hosts=192.168.60.124:8649,192.168.60.62:8649"
+LOGCONF="-Dflume.root.logger=DEBUG,LOGFILE"
+
+CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/agents.conf --name a1 ${LOGCONF} ${MONCONF}"
 
 #
-exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx2g" ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf --conf-file ${bin}/agents.conf --name a1 -Dflume.root.logger=DEBUG,LOGFILE -Dflume.monitoring.type=ganglia -Dflume.monitoring.hosts=239.2.11.71:8661"
+exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx2g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
