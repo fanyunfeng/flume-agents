@@ -2,8 +2,6 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-CONF=$1
-
 #load config
 . ${bin}/../etc/java.sh
 . ${bin}/../etc/config.sh
@@ -19,5 +17,9 @@ fi
 
 export FLUME_JAVA_OPTS=-Xmx200m
 
+MONCONF="-Dflume.monitoring.type=ganglia -Dflume.monitoring.hosts=192.168.60.124:8649,192.168.60.62:8649"
+LOGCONF="-Dflume.root.logger=DEBUG,LOGFILE"
+
+CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/$1 --name a1 ${LOGCONF} ${MONCONF}"
 #
-exec ${FLUME_HOME}/bin/flume-ng agent --conf ${FLUME_HOME}/conf --conf-file ${bin}/${CONF} --name a1 -Dflume.root.logger=DEBUG,LOGFILE
+exec ${FLUME_HOME}/bin/flume-ng agent ${CONF}
