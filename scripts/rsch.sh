@@ -46,6 +46,7 @@ function genBat(){
 cat << EOF > ${file}
 REM ECHO OFF
 schtasks /create /tn hc.flume.rmfiles /tr `toDosPath ${commandFile}` /sc DAILY /RU "System" /RP /st 00:15:00 /s ${host}
+exit
 EOF
 }
 
