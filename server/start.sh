@@ -14,20 +14,36 @@ if [ ! -d logs ]; then
     chown ${HADOOP_USER} logs
 fi
 
-if [ ! -d cache/checkpoint ]; then
-    mkdir -p cache/checkpoint
-    chown ${HADOOP_USER} cache -R
-fi
+function createCacheDir(){
+	if [ ! -d $1 ]; then
+	    mkdir -p $1
+	    chown ${HADOOP_USER} $1
+	fi
+	if [ ! -d $1/checkpoint ]; then
+	    mkdir -p $1/checkpoint
+	    chown ${HADOOP_USER} $1/checkpoint
+	fi
 
-if [ ! -d cache/data ]; then
-    mkdir cache/data
-    chown ${HADOOP_USER} cache/data
-fi
+	if [ ! -d $1/data ]; then
+	    mkdir $1/data
+	    chown ${HADOOP_USER} $1/data
+	fi
+}
 
-MONCONF="-Dflume.monitoring.type=ganglia -Dflume.monitoring.hosts=192.168.60.124:8649,192.168.60.62:8649"
+createCacheDir cache1
+createCacheDir cache2
+createCacheDir cache3
+createCacheDir cache4
+
+CLASSPATH=../lib/*.jar:${CLASSPATH}
+
+export CLASSPATH
+
+IP=`basename $1 .conf`
+MONCONF="-Dflume.monitoring.type=hcse.flume.HcseGangliaServer -Dflume.monitoring.hosts=192.168.60.124:8649,192.168.60.62:8649 -Dflume.monitoring.hostname=${IP}"
 LOGCONF="-Dflume.root.logger=DEBUG,LOGFILE"
 
-CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/agents.conf --name a1 ${LOGCONF} ${MONCONF}"
+CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/$1 --name a1 ${LOGCONF} ${MONCONF}"
 
 #
-exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx2g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
+exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx8g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
