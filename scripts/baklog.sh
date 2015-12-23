@@ -1,5 +1,6 @@
 #!/bin/bash
 
+FIND=/bin/find
 ROOTS='/e/logs /f/logs'
 SERVICES='d21 d22 cache1/search_time'
 
@@ -17,7 +18,7 @@ function bakup(){
     if [ ! -d ${BAKDIR} ]; then
       mkdir -p ${BAKDIR}
     fi
-    find -L ${SOURCE} -regex '.*log\.[-0-9]*' -exec mv {} ${BAKDIR} \;
+    ${FIND} -L ${SOURCE} -regex '.*log\.[-0-9]*' -exec mv {} ${BAKDIR} \;
     #mv ${SOURCE}/*.log.* ${BAKDIR}
   done
 }
