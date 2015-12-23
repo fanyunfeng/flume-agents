@@ -46,4 +46,4 @@ LOGCONF="-Dflume.root.logger=DEBUG,LOGFILE"
 CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/$1 --name a1 ${LOGCONF} ${MONCONF}"
 
 #
-exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx8g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
+exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx16g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
