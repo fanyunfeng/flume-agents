@@ -45,5 +45,11 @@ LOGCONF="-Dflume.root.logger=DEBUG,LOGFILE"
 
 CONF="--conf ${FLUME_HOME}/conf --conf-file ${bin}/$1 --name a1 ${LOGCONF} ${MONCONF}"
 
+FLUME_JAVA_OPTS="$FLUME_JAVA_OPTS -Dcom.sun.management.jmxremote.port=60001"   
+FLUME_JAVA_OPTS="$FLUME_JAVA_OPTS -Dcom.sun.management.jmxremote.authenticate=false"
+FLUME_JAVA_OPTS="$FLUME_JAVA_OPTS -Dcom.sun.management.jmxremote.ssl=false" 
+FLUME_JAVA_OPTS="$FLUME_JAVA_OPTS -Djava.rmi.server.hostname=192.168.60.62"
+FLUME_JAVA_OPTS="$FLUME_JAVA_OPTS -Xmx2048m -Xms2048m -Xss512k" 
+
 #
-exec su  ${HADOOP_USER} -c "FLUME_JAVA_OPTS="-Xmx16g" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
+exec su ${HADOOP_USER} -c "ulimit -u 256600; FLUME_JAVA_OPTS=\"${FLUME_JAVA_OPTS}\" ${FLUME_HOME}/bin/flume-ng agent ${CONF}"
