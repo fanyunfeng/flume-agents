@@ -10,7 +10,7 @@ if [ ! -d ${TMPDIR} ]; then
     mkdir -p ${TMPDIR}
 fi
 
-if [ $# -lt 2 ]; then
+if [ $# -lt 1 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
     echo "doc:"
@@ -45,7 +45,7 @@ function genBat(){
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
-schtasks /create /tn hc.flume.rmfiles /tr `toDosPath ${commandFile}` /sc DAILY /RU "System" /RP /st 00:15:00 /s ${host}
+schtasks /delete /tn hc.flume.rmfiles /F /s ${host}
 exit
 EOF
 }
