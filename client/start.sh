@@ -4,6 +4,7 @@ bin=`cd "$bin"; pwd`
 
 #load config
 . ${bin}/../etc/java.sh
+. ${bin}/../etc/flume.sh
 . ${bin}/../etc/config.sh
 
 
