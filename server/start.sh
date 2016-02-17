@@ -3,6 +3,9 @@ bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
 #load config
+. ${bin}/../etc/java.sh
+. ${bin}/../etc/hadoop.sh
+. ${bin}/../etc/flume.sh
 . ${bin}/../etc/config.sh
 
 #
