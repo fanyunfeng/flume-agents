@@ -1,0 +1,15 @@
+export JAVA_LIBRARY_PATH=/opt/hadoop-2.5.2/lib/native
+export HADOOP_INSTALL=/opt/hadoop-2.5.2
+export HADOOP_HOME=/opt/hadoop-2.5.2
+export SCALA_HOME=/opt/scala-2.11.2
+export HBASE_HOME=/opt/hbase-0.98.13-hadoop2
+export SPARK_HOME=/opt/spark-1.4.1-bin-hadoop2.4
+export HIVE_HOME=/opt/hive
+export SQOOP_HOME=/opt/sqoop1.4.6
+export HBASE_HOME=/opt/hbase-0.98.13-hadoop2
+export HIVE_CONF_DIR=$HIVE_HOME/conf
+export LOGDIR=$SQOOP_HOME/logs
+export HIVE_AUX_JARS_PATH=$HIVE_HOME/lib
+export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native
+export HADOOP_OPTS="-Djava.security.egd=file:/dev/../dev/urandom"
+export PATH=$HIVE_HOME/bin:$HADOOP_HOME/bin:$HBASE_HOME/bin:$SPARK_HOME/bin:$SCALA_HOME/bin:$HADOOP_HOME/sbin:$SPARK_HOME/sbin:$HBASE_HOME/bin:$SQOOP_HOME/bin:$PATH
