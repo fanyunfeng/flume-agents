@@ -1,5 +1,4 @@
 REM @ECHO OFF
 
-set LOCATION=%~dp0
-
-"C:\Program Files (x86)\Git\bin\sh.exe" --login %LOCATION%wrmfile.sh
+forfiles /p e:\logs /s /m *.COMPLETED /d -7 /c "cmd /c del @path /f"
+forfiles /p f:\logs /s /m *.COMPLETED /d -7 /c "cmd /c del @path /f"

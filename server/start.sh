@@ -37,6 +37,10 @@ createCacheDir cache1
 createCacheDir cache2
 createCacheDir cache3
 createCacheDir cache4
+createCacheDir cache5
+createCacheDir cache6
+createCacheDir cache7
+createCacheDir cache8
 
 CLASSPATH=../lib/*.jar:${CLASSPATH}
 
