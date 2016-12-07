@@ -45,7 +45,7 @@ function genBat(){
 #BAT file
 cat << EOF > ${file}
 REM ECHO OFF
-psexec \\\\${host} -c \\\\${FSERVER}\\share\\software\\windows\Git-1.9.5-preview20150319.exe /NORESTART /SILENT
+psexec \\\\${host} -c \\\\${FSERVER}\\share\\software\\windows\\Git-2.9.2-32-bit.exe /NORESTART /SILENT
 EOF
 }
 
