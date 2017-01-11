@@ -18,23 +18,24 @@ function formatIp(){
 }
 
 function toDosPath(){
-    echo $1 | sed -e 's|^\/\(.\?\)\/|\1:\/|;s|/$||;s|/|\\|g'
+    echo $1 | sed -e 's|^\/\(.\?\)\/|\1:\/|;s|/|\\|g'
 }
 
 function toDosRath(){
-    echo $1 | sed -e 's|^\/\(.\?\)\/|\1$\/|;s|/$||;s|/|\\|g'
+    echo $1 | sed -e 's|^\/\(.\?\)\/|\1$\/|;s|/|\\|g'
 }
 
-function toDosLocalPath(){
-    echo $1 | sed -e 's|^/\(.\)/|\1:\\|;s|/|\\|g'
-}
 
+#RUNSHELL
+#CMD        run with cmd.exe file
+#PSEXEC     run with psexec \\host file
+#PSEXECSH   run with psexec \\host bash file
 function runBat(){
 	unix2dos -q ${TMPDIR}/$1
 	
 if [ ${RUNSHELL} = CMD ]; then
 	COMMAND=${TMPDIR}/$1
-	COMMAND=`toDosLocalPath ${COMMAND}`
+	COMMAND=`toDosPath ${COMMAND}`
 	
 	cmd.exe //C "$COMMAND"
 	rm ${TMPDIR}/$1
@@ -49,7 +50,7 @@ EOF
 	unix2dos -q ${TMPDIR}/$1.R.bat
 	
 	COMMAND=${TMPDIR}/$1.R.bat 
-	COMMAND=`toDosLocalPath ${COMMAND}`
+	COMMAND=`toDosPath ${COMMAND}`
 	
 	cmd.exe //C "$COMMAND"
 	
@@ -64,12 +65,12 @@ elif [ ${RUNSHELL} = PSEXECSH ]; then
     local fullFileName=`cat ${TMPDIR}/$1`
     local fileName=`basename ${fullFileName}`
 
-		local remoteFullFileName=${rTmpDir}/${fileName}
+    local remoteFullFileName=${rTmpDir}/${fileName}
     local remoteFullDosFileName=`toDosPath ${remoteFullFileName}`
 
 #BOOT BAT run by psexec
 cat << EOF > ${TMPDIR}/$1.R.bat
-"C:\Program Files (x86)\Git\bin\sh.exe" ${remoteFullFileName}
+"C:\Program Files (x86)\Git\bin\sh.exe" --login ${remoteFullDosFileName}
 REM del ${remoteFullDosFileName}
 EOF
 
@@ -91,7 +92,7 @@ EOF
 	unix2dos -q ${TMPDIR}/$1.U.bat
 	
 	COMMAND=${TMPDIR}/$1.U.bat 
-	COMMAND=`toDosLocalPath ${COMMAND}`
+	COMMAND=`toDosPath ${COMMAND}`
 	
 	cmd.exe //C "$COMMAND"
 	
