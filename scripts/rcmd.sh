@@ -4,11 +4,6 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-TMPDIR=${bin}/tmp
-
-if [ ! -d ${TMPDIR} ]; then
-    mkdir -p ${TMPDIR}
-fi
 
 if [ $# -lt 3 ]; then
     echo "Windows Platform Deployment Tools."
@@ -23,11 +18,6 @@ if [ $# -lt 3 ]; then
     exit
 fi
 
-. ${bin}/tools.sh
-. ${bin}/config.sh
-
-hosts=$1
-shift
 
 tmpfilename=`basename $0 .sh`
 tmpfilename=${tmpfilename}.bat

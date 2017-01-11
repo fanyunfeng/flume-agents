@@ -25,14 +25,21 @@ function toDosRath(){
     echo $1 | sed -e 's|^\/\(.\?\)\/|\1$\/|;s|/$||;s|/|\\|g'
 }
 
+function toDosLocalPath(){
+    echo $1 | sed -e 's|^/\(.\)/|\1:\\|;s|/|\\|g'
+}
+
 function runBat(){
 	unix2dos -q ${TMPDIR}/$1
 	
-	cmd /K ${TMPDIR}\\$1
+	COMMAND=${TMPDIR}/$1
+	COMMAND=`toDosLocalPath ${COMMAND}`
+	
+	cmd.exe //C "$COMMAND"
 }
 
 function runOnHosts(){
-    grep "^#\|^[ \t]*$" -v ${hosts} | while IFS=" " read host os servcie; do
+    grep "^#\|^[ \t]*$" -v ${HOSTLIST} | while IFS=" " read host os servcie; do
         echo -------------------
         echo ${host} ${os}
       
@@ -45,3 +52,29 @@ function runOnHosts(){
         runBat ${tmpfilename}
     done
 }
+
+TMPDIR=${bin}/tmp
+
+if [ ! -d ${TMPDIR} ]; then
+    mkdir -p ${TMPDIR}
+fi
+
+tmpfilename=`basename $0 .sh`
+tmpfilename=${tmpfilename}.bat
+
+echo BAT:$tmpfilename
+
+HOSTLIST=$1
+if [ ! -e $1 ]; then
+	echo $1 > ./tmp.host
+	
+	HOSTLIST=./tmp.host
+fi
+
+shift
+
+echo ON:
+cat ${HOSTLIST}
+
+echo START:
+

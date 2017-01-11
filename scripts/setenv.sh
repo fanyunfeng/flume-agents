@@ -4,11 +4,6 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-TMPDIR=${bin}/tmp
-
-if [ ! -d ${TMPDIR} ]; then
-    mkdir -p ${TMPDIR}
-fi
 
 if [ $# -lt 1 ]; then
     echo "Windows Platform Deployment Tools."
@@ -26,13 +21,6 @@ fi
 . ${bin}/tools.sh
 . ${bin}/config.sh
 
-hosts=$1
-shift
-
-tmpfilename=`basename $0 .sh`
-tmpfilename=${tmpfilename}.cmd
-
-echo ${tmpfilename}
 
 #generate BAT file
 #$1=file $2=host others
@@ -44,17 +32,19 @@ function genBat(){
 
 #BAT file
 cat << EOF > ${file}
-psexec \\\\${host} -c `toDosPath ${file}.cmd`
+psexec \\\\${host} -c `toDosPath ${file}.R.bat`
 EOF
 
 #evn file
-cat << EOF > ${file}.cmd
+cat << EOF > ${file}.R.bat
 REM ECHO OFF
 
 setx -m JAVA_HOME "C:\Program Files\Java\jre7"
 setx -m CLASSPATH ".;C:\Program Files\Java\jre7\lib\tools.jar"
 setx -m FLUME_HOME "c:\opt\apache-flume-1.6.0-bin"
 EOF
+
+    unix2dos -q ${file}.R.bat
 }
 
 runOnHosts $*

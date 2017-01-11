@@ -4,11 +4,6 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-TMPDIR=${bin}/tmp
-
-if [ ! -d ${TMPDIR} ]; then
-    mkdir -p ${TMPDIR}
-fi
 
 if [ $# -lt 2 ]; then
     echo "Windows Platform Deployment Tools."
@@ -26,13 +21,6 @@ fi
 . ${bin}/tools.sh
 . ${bin}/config.sh
 
-hosts=$1
-shift
-
-tmpfilename=`basename $0 .sh`
-tmpfilename=${tmpfilename}.cmd
-
-echo ${tmpfilename}
 
 #generate BAT file
 #$1=file $2=host others
@@ -48,9 +36,11 @@ function genBat(){
     local fileName=`basename ${commandFile}`
 
 #BOOT BAT run by psexec
-cat << EOF > ${file}.bat
+cat << EOF > ${file}.R.bat
 "C:\Program Files (x86)\Git\bin\sh.exe" --login `toDosPath ${rTmpDir}`\\${fileName}
 EOF
+
+    unix2dos -q ${file}.R.bat
 
 #BAT file
 cat << EOF > ${file}
@@ -61,7 +51,7 @@ mkdir ${rTmpHostDir}
 xcopy `toDosPath ${commandFile}` ${rTmpHostDir} /Y
 
 REM run bat on Remote Host
-psexec \\\\${host} -c -f `toDosPath ${file}.bat`
+psexec \\\\${host} -c -f `toDosPath ${file}.R.bat`
 exit
 EOF
 }
