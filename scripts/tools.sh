@@ -32,10 +32,73 @@ function toDosLocalPath(){
 function runBat(){
 	unix2dos -q ${TMPDIR}/$1
 	
+if [ ${RUNSHELL} = CMD ]; then
 	COMMAND=${TMPDIR}/$1
 	COMMAND=`toDosLocalPath ${COMMAND}`
 	
 	cmd.exe //C "$COMMAND"
+	rm ${TMPDIR}/$1
+elif [ ${RUNSHELL} = PSEXEC ]; then
+#PSEXEC
+
+#BAT file
+cat << EOF > ${TMPDIR}/$1.R.bat
+psexec \\\\${2} -f -c `toDosPath ${TMPDIR}/$1`
+EOF
+
+	unix2dos -q ${TMPDIR}/$1.R.bat
+	
+	COMMAND=${TMPDIR}/$1.R.bat 
+	COMMAND=`toDosLocalPath ${COMMAND}`
+	
+	cmd.exe //C "$COMMAND"
+	
+	rm ${TMPDIR}/$1
+	rm ${TMPDIR}/$1.R.bat
+elif [ ${RUNSHELL} = PSEXECSH ]; then
+#PSEXECSH
+    local rTmpDir=/c/opt/tmp
+
+    local rTmpHostDir=\\\\$2\\`toDosRath ${rTmpDir}`
+
+    local fullFileName=`cat ${TMPDIR}/$1`
+    local fileName=`basename ${fullFileName}`
+
+		local remoteFullFileName=${rTmpDir}/${fileName}
+    local remoteFullDosFileName=`toDosPath ${remoteFullFileName}`
+
+#BOOT BAT run by psexec
+cat << EOF > ${TMPDIR}/$1.R.bat
+"C:\Program Files (x86)\Git\bin\sh.exe" ${remoteFullFileName}
+REM del ${remoteFullDosFileName}
+EOF
+
+    unix2dos -q ${TMPDIR}/$1.R.bat
+
+#BAT file
+cat << EOF > ${TMPDIR}/$1.U.bat
+REM ECHO OFF
+
+REM upload shell script
+mkdir ${rTmpHostDir}
+xcopy `toDosPath ${fullFileName}` ${rTmpHostDir} /Y
+
+REM run bat on Remote Host
+psexec \\\\${host} -f -c `toDosPath ${TMPDIR}/$1.R.bat`
+EOF
+
+#START
+	unix2dos -q ${TMPDIR}/$1.U.bat
+	
+	COMMAND=${TMPDIR}/$1.U.bat 
+	COMMAND=`toDosLocalPath ${COMMAND}`
+	
+	cmd.exe //C "$COMMAND"
+	
+#	rm ${TMPDIR}/$1
+#	rm ${TMPDIR}/$1.U.bat
+#	rm ${TMPDIR}/$1.R.bat
+fi
 }
 
 function runOnHosts(){
@@ -49,7 +112,7 @@ function runOnHosts(){
 
         genBat ${tmpfilename} $host $*
 
-        runBat ${tmpfilename}
+        runBat ${tmpfilename} ${host}
     done
 }
 
@@ -78,3 +141,4 @@ cat ${HOSTLIST}
 
 echo START:
 
+RUNSHELL=CMD
