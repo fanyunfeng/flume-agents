@@ -12,6 +12,8 @@ echo #################################
 echo install JRE
 ${bin}/jre.install.sh $*
 
+exit 0
+
 echo #################################
 echo set env
 ${bin}/setenv.sh $*
@@ -26,7 +28,7 @@ ${bin}/rcp.sh $1 /c/opt/flume-agents /c/opt/flume-agents
 
 echo #################################
 echo create service
-${bin}/csrv2.sh $1
+${bin}/csrv.sh $1
 
 
 echo #################################

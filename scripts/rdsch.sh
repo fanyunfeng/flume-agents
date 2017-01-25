@@ -4,12 +4,6 @@ bin=`which $0`
 bin=`dirname ${bin}`
 bin=`cd "$bin"; pwd`
 
-TMPDIR=${bin}/tmp
-
-if [ ! -d ${TMPDIR} ]; then
-    mkdir -p ${TMPDIR}
-fi
-
 if [ $# -lt 1 ]; then
     echo "Windows Platform Deployment Tools."
     echo 
@@ -26,13 +20,6 @@ fi
 . ${bin}/tools.sh
 . ${bin}/config.sh
 
-hosts=$1
-shift
-
-tmpfilename=`basename $0 .sh`
-tmpfilename=${tmpfilename}.cmd
-
-echo ${tmpfilename}
 
 #generate BAT file
 #$1=file $2=host others
