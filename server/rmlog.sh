@@ -14,7 +14,7 @@ bin=`cd "$bin"; pwd`
 
 #
 if [ ! -d ${HADOOP_MOUNTPOINT}/search/events ]; then
-	/usr/local/bin/jnirun.hadoop /usr/local/bin/fuse_dfs dfs://namenode1:9000 ${HADOOP_MOUNTPOINT}
+	/usr/local/bin/jnirun.hadoop /usr/local/bin/fuse_dfs hdfs://hadoop2cluster ${HADOOP_MOUNTPOINT}
 fi
 
 if [ ! -d ${HADOOP_MOUNTPOINT}/search/events ]; then
